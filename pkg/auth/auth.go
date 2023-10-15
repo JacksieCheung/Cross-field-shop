@@ -1,14 +1,15 @@
 package auth
 
 import (
-	"Data-acquisition-subsystem/pkg/errno"
-	"Data-acquisition-subsystem/pkg/token"
+	"Cross-field-shop/pkg/errno"
+	"Cross-field-shop/pkg/token"
 	"github.com/gin-gonic/gin"
 )
 
 // Context is the context of the JSON web token.
 type Context struct {
-	ID        int
+	ID        uint32
+	Role      uint32
 	ExpiresAt int64 // 过期时间（时间戳，10位）
 }
 
@@ -21,6 +22,7 @@ func Parse(tokenString string) (*Context, error) {
 
 	return &Context{
 		ID:        t.ID,
+		Role:      t.Role,
 		ExpiresAt: t.ExpiresAt,
 	}, nil
 }

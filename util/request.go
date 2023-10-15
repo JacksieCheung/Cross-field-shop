@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"Data-acquisition-subsystem/pkg/errno"
+	"Cross-field-shop/pkg/errno"
 	"golang.org/x/net/publicsuffix"
 )
 

@@ -1,11 +1,11 @@
 package user
 
 import (
-	. "Data-acquisition-subsystem/handler"
-	"Data-acquisition-subsystem/log"
-	"Data-acquisition-subsystem/pkg/errno"
-	"Data-acquisition-subsystem/service/user"
-	"Data-acquisition-subsystem/util"
+	. "Cross-field-shop/handler"
+	"Cross-field-shop/log"
+	"Cross-field-shop/pkg/errno"
+	"Cross-field-shop/service/user"
+	"Cross-field-shop/util"
 	"encoding/base64"
 
 	"github.com/gin-gonic/gin"
@@ -13,7 +13,7 @@ import (
 )
 
 func Login(c *gin.Context) {
-	log.Info("User LoginAdmin function called.",
+	log.Info("User login function called.",
 		zap.String("X-Request-Id", util.GetReqID(c)))
 
 	// 从前端获取 id 和 password

@@ -1,13 +1,13 @@
 package handler
 
 import (
-	"Data-acquisition-subsystem/log"
-	"Data-acquisition-subsystem/util"
+	"Cross-field-shop/log"
+	"Cross-field-shop/util"
 	"net/http"
 	"runtime"
 	"strconv"
 
-	"Data-acquisition-subsystem/pkg/errno"
+	"Cross-field-shop/pkg/errno"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"

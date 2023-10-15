@@ -1,8 +1,8 @@
 package token
 
 import (
-	"Data-acquisition-subsystem/log"
-	"Data-acquisition-subsystem/pkg/errno"
+	"Cross-field-shop/log"
+	"Cross-field-shop/pkg/errno"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/spf13/viper"
@@ -22,20 +22,23 @@ func getJwtKey() string {
 
 // TokenPayload is a required payload when generates token. 令牌生成时，TokenPayload是必需的有效负载。
 type TokenPayload struct {
-	ID      int           `json:"id"`
+	ID      uint32        `json:"id"`
+	Role    uint32        `json:"role"`
 	Expired time.Duration `json:"expired"` // 有效时间（nanosecond）
 }
 
 // TokenResolve means returned payload when resolves token. TokenResolve表示解析令牌时返回的有效负载。
 type TokenResolve struct {
-	ID        int   `json:"id"`
-	ExpiresAt int64 `json:"expires_at"` // 过期时间（时间戳，10位）
+	ID        uint32 `json:"id"`
+	Role      uint32 `json:"role"`
+	ExpiresAt int64  `json:"expires_at"` // 过期时间（时间戳，10位）
 }
 
 // GenerateToken generates token.
 func GenerateToken(payload *TokenPayload) (string, error) {
 	claims := &TokenClaims{
 		ID:        payload.ID,
+		Role:      payload.Role,
 		ExpiresAt: time.Now().Unix() + int64(payload.Expired.Seconds()),
 	}
 
@@ -65,6 +68,7 @@ func ResolveToken(tokenStr string) (*TokenResolve, error) {
 
 	t := &TokenResolve{
 		ID:        claims.ID,
+		Role:      claims.Role,
 		ExpiresAt: claims.ExpiresAt,
 	}
 	return t, nil

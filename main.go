@@ -1,18 +1,18 @@
 package main
 
 import (
-	"Data-acquisition-subsystem/model"
-	"Data-acquisition-subsystem/service/user"
+	"Cross-field-shop/model"
 	"errors"
 	"fmt"
 	"go.uber.org/zap"
 	"net/http"
 	"time"
 
-	"Data-acquisition-subsystem/config"
-	"Data-acquisition-subsystem/log"
-	"Data-acquisition-subsystem/router"
-	"Data-acquisition-subsystem/router/middleware"
+	"Cross-field-shop/config"
+	"Cross-field-shop/log"
+	"Cross-field-shop/router"
+	"Cross-field-shop/router/middleware"
+	"Cross-field-shop/service/history"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/pflag"
@@ -38,9 +38,11 @@ func main() {
 	model.DB.Init()
 	defer model.DB.Close()
 
-	// init channel and global data-acq-goroutine
-	user.InitGlobalChannel()
-	go user.DataAcquisition()
+	// init redis
+	model.RedisDB.Init()
+	defer model.RedisDB.Close()
+
+	go history.GoCreateHistory()
 
 	// Set gin mode.
 	gin.SetMode(viper.GetString("runmode"))

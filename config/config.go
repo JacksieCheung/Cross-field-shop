@@ -3,7 +3,7 @@ package config
 import (
 	"strings"
 
-	"Data-acquisition-subsystem/util"
+	"Cross-field-shop/util"
 	"github.com/spf13/viper"
 )
 

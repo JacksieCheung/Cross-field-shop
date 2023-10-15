@@ -9,9 +9,9 @@ import (
 
 	"go.uber.org/zap"
 
-	"Data-acquisition-subsystem/handler"
-	"Data-acquisition-subsystem/log"
-	"Data-acquisition-subsystem/pkg/errno"
+	"Cross-field-shop/handler"
+	"Cross-field-shop/log"
+	"Cross-field-shop/pkg/errno"
 
 	"github.com/gin-gonic/gin"
 	"github.com/willf/pad"

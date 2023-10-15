@@ -1,13 +1,18 @@
 package router
 
 import (
+	"Cross-field-shop/handler/commodities"
+	"Cross-field-shop/handler/consignee"
+	"Cross-field-shop/handler/history"
+	"Cross-field-shop/handler/purchase"
+	"Cross-field-shop/pkg/constvar"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 
-	"Data-acquisition-subsystem/handler/sd"
-	"Data-acquisition-subsystem/handler/user"
-	"Data-acquisition-subsystem/router/middleware"
+	"Cross-field-shop/handler/sd"
+	"Cross-field-shop/handler/user"
+	"Cross-field-shop/router/middleware"
 )
 
 // Load loads the middlewares, routes, handlers.
@@ -23,18 +28,48 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		c.String(http.StatusNotFound, "The incorrect API route.")
 	})
 
+	normalRequired := middleware.AuthMiddleware(constvar.AuthLevelNormal)
+	//adminRequired := middleware.AuthMiddleware(constvar.AuthLevelAdmin)
+	//superAdminRequired := middleware.AuthMiddleware(constvar.AuthLevelSuperAdmin)
+
 	userRouter := g.Group("/user")
 	{
 		userRouter.POST("/login", user.Login)
 	}
 
-	//searchRouter := g.Group("/search")
-	////searchRouter.Use(middleware.AuthMiddleware)
-	//{
-	//	searchRouter.GET("/grade", search.QueryGrade)
-	//	searchRouter.GET("/homework", search.QueryHomework)
-	//	searchRouter.GET("/mht", search.QueryUserMHT)
-	//}
+	historyRouter := g.Group("/history")
+	historyRouter.Use(normalRequired)
+	{
+		historyRouter.GET("", history.List)
+		historyRouter.POST("", history.Post)
+	}
+
+	purchaseRouter := g.Group("/purchase")
+	purchaseRouter.Use(normalRequired)
+	{
+		purchaseRouter.GET("", purchase.ListCart)
+		purchaseRouter.POST("", purchase.Post)
+		purchaseRouter.DELETE("/:id", purchase.DeleteCart)
+		purchaseRouter.DELETE("/:id", purchase.UpdateCart)
+	}
+
+	consigneeRouter := g.Group("/consignee")
+	consigneeRouter.Use(normalRequired)
+	{
+		consigneeRouter.GET("", consignee.List)
+		consigneeRouter.POST("", consignee.Post)
+		consigneeRouter.DELETE("/:id", consignee.DeleteConsignee)
+		consigneeRouter.DELETE("/:id", consignee.UpdateConsignee)
+	}
+
+	commoditiesRouter := g.Group("/commodities")
+	commoditiesRouter.Use(normalRequired)
+	{
+		commoditiesRouter.GET("", commodities.List)
+		//consigneeRouter.POST("", consignee.Post)
+		//consigneeRouter.DELETE("/:id", consignee.DeleteConsignee)
+		//consigneeRouter.DELETE("/:id", consignee.UpdateConsignee)
+	}
 
 	//g.POST("/upload", middleware.AuthMiddleware, upload.UploadFile)
 

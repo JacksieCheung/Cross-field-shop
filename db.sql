@@ -60,7 +60,7 @@ CREATE TABLE `comments` (
     `info` varchar(100) DEFAULT '',
     `pictures` TEXT,
     `tag` varchar(50) DEFAULT '' COMMENT 'tag id list',
-    `time` DATETIME DEFAULT NULL,
+    `time` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `re` int(8) DEFAULT 0 COMMENT '删除标志',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = UTF8MB4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
@@ -96,9 +96,9 @@ CREATE TABLE `purchase` (
     `commodity_id` int(11) UNSIGNED NOT NULL,
     `number` int(11) UNSIGNED NOT NULL DEFAULT 1,
     `price` decimal(10,2) NOT NULL DEFAULT 0,
-    `status` int(8) UNSIGNED DEFAULT 0,
-    `logistics` TEXT,
-    `time` DATETIME DEFAULT NULL,
+    `status` int(8) UNSIGNED DEFAULT 0 COMMENT '0-in the cart;  1-bought',
+    `logistics` TEXT DEFAULT 'NONE',
+    `time` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `re` int(8) DEFAULT 0 COMMENT '删除标志',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = UTF8MB4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
@@ -115,7 +115,7 @@ CREATE TABLE `history` (
     `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     `user_id` int(11) UNSIGNED NOT NULL,
     `commodity_id` int(11) UNSIGNED NOT NULL,
-    `time` DATETIME DEFAULT NULL,
+    `time` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `re` int(8) DEFAULT 0 COMMENT '删除标志',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = UTF8MB4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;

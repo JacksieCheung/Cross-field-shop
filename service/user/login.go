@@ -1,9 +1,9 @@
 package user
 
 import (
-	"Data-acquisition-subsystem/model"
-	"Data-acquisition-subsystem/pkg/token"
-	"Data-acquisition-subsystem/util"
+	"Cross-field-shop/model"
+	"Cross-field-shop/pkg/token"
+	"Cross-field-shop/util"
 	"errors"
 	"github.com/jinzhu/gorm"
 )
@@ -19,7 +19,7 @@ func Login(account, accountPassword string) (string, int, error) {
 
 	// 生成 auth token
 	tokenString, err := token.GenerateToken(&token.TokenPayload{
-		ID:      int(user.Id),
+		ID:      user.Id,
 		Expired: util.GetExpiredTime(),
 	})
 	if err != nil {

@@ -1,14 +1,15 @@
 package token
 
 import (
-	"Data-acquisition-subsystem/pkg/errno"
+	"Cross-field-shop/pkg/errno"
 	"time"
 )
 
 // TokenClaims means a claim segment in a JWT.
 type TokenClaims struct {
-	ID        int   `json:"id"`
-	ExpiresAt int64 `json:"expires_at"` // 过期时间（时间戳，10位）
+	ID        uint32 `json:"id"`
+	Role      uint32 `json:"role"`
+	ExpiresAt int64  `json:"expires_at"` // 过期时间（时间戳，10位）
 }
 
 // Valid checks whether the token is valid.

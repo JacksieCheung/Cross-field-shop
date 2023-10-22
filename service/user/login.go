@@ -20,6 +20,7 @@ func Login(account, accountPassword string) (string, int, error) {
 	// 生成 auth token
 	tokenString, err := token.GenerateToken(&token.TokenPayload{
 		ID:      user.Id,
+		Role:    uint32(user.Role),
 		Expired: util.GetExpiredTime(),
 	})
 	if err != nil {

@@ -57,12 +57,15 @@ DROP TABLE IF EXISTS `comments`;
 
 CREATE TABLE `comments` (
     `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `user_id` int(11) UNSIGNED NOT NULL,
+    `commodity_id` int(11) UNSIGNED NOT NULL,
     `info` varchar(100) DEFAULT '',
     `pictures` TEXT,
     `tag` varchar(50) DEFAULT '' COMMENT 'tag id list',
     `time` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `re` int(8) DEFAULT 0 COMMENT '删除标志',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE (user_id, commodity_id)
 ) ENGINE = InnoDB DEFAULT CHARSET = UTF8MB4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ---------------------------

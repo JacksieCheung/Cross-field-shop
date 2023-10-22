@@ -1,10 +1,12 @@
 package router
 
 import (
+	"Cross-field-shop/handler/comments"
 	"Cross-field-shop/handler/commodities"
 	"Cross-field-shop/handler/consignee"
 	"Cross-field-shop/handler/history"
 	"Cross-field-shop/handler/purchase"
+	"Cross-field-shop/handler/tags"
 	"Cross-field-shop/pkg/constvar"
 	"net/http"
 
@@ -29,12 +31,14 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	})
 
 	normalRequired := middleware.AuthMiddleware(constvar.AuthLevelNormal)
-	//adminRequired := middleware.AuthMiddleware(constvar.AuthLevelAdmin)
+	adminRequired := middleware.AuthMiddleware(constvar.AuthLevelAdmin)
 	//superAdminRequired := middleware.AuthMiddleware(constvar.AuthLevelSuperAdmin)
 
 	userRouter := g.Group("/user")
 	{
 		userRouter.POST("/login", user.Login)
+		userRouter.POST("/register/validate_code", user.ValidateCode)
+		userRouter.POST("/register", user.Register)
 	}
 
 	historyRouter := g.Group("/history")
@@ -47,10 +51,10 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	purchaseRouter := g.Group("/purchase")
 	purchaseRouter.Use(normalRequired)
 	{
-		purchaseRouter.GET("", purchase.ListCart)
+		purchaseRouter.GET("/cart", purchase.ListCart)
 		purchaseRouter.POST("", purchase.Post)
-		purchaseRouter.DELETE("/:id", purchase.DeleteCart)
-		purchaseRouter.DELETE("/:id", purchase.UpdateCart)
+		purchaseRouter.DELETE("/cart/:id", purchase.DeleteCart)
+		purchaseRouter.DELETE("/cart/:id", purchase.UpdateCart)
 	}
 
 	consigneeRouter := g.Group("/consignee")
@@ -63,12 +67,29 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	}
 
 	commoditiesRouter := g.Group("/commodities")
-	commoditiesRouter.Use(normalRequired)
 	{
-		commoditiesRouter.GET("", commodities.List)
-		//consigneeRouter.POST("", consignee.Post)
-		//consigneeRouter.DELETE("/:id", consignee.DeleteConsignee)
-		//consigneeRouter.DELETE("/:id", consignee.UpdateConsignee)
+		commoditiesRouter.GET("", normalRequired, commodities.List)
+		commoditiesRouter.POST("", adminRequired, commodities.Post)
+		commoditiesRouter.PUT("/:id", adminRequired, commodities.UpdateCommodity)
+		commoditiesRouter.DELETE("/:id", adminRequired, commodities.DeleteCommodity)
+	}
+
+	commentsRouter := g.Group("/comments")
+	commentsRouter.Use(normalRequired)
+	{
+		commentsRouter.GET("", comments.List)
+		consigneeRouter.POST("", comments.Post)
+		consigneeRouter.DELETE("/:id", comments.DeleteComment)
+		consigneeRouter.PUT("/:id", comments.UpdateComment)
+	}
+
+	tagsRouter := g.Group("/tags")
+	tagsRouter.Use(normalRequired)
+	{
+		tagsRouter.GET("/:type", tags.ListTags)
+		tagsRouter.POST("", tags.Post)
+		tagsRouter.DELETE("/:id", tags.DeleteTags)
+		tagsRouter.PUT("/:id", tags.UpdateTags)
 	}
 
 	//g.POST("/upload", middleware.AuthMiddleware, upload.UploadFile)
